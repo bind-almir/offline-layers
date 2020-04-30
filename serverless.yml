@@ -1,0 +1,32 @@
+service: offline-layers
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage,'dev'}
+  region: ${opt:region,'us-east-1'}
+  environment:
+    NODE_PATH: "./:/opt/node_modules"
+
+plugins:
+  - serverless-offline  
+
+layers:
+  hello:
+    path: layers/hello
+    name: ${self:provider.stage}-helper-libraries 
+    description: Example
+    package:
+      include:
+        - node_modules/**
+
+functions:
+  hello:
+    handler: handler.hello
+    layers:
+      - {Ref: HelloLambdaLayer}  
+    events:
+      - http: 
+          path: hello
+          method: get
+          cors: true
