@@ -16,9 +16,6 @@ layers:
     path: layers/hello
     name: ${self:provider.stage}-helper-libraries 
     description: Example
-    package:
-      include:
-        - node_modules/**
 
 functions:
   hello:
